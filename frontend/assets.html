@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>assets</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h3 class="display-5 text-center bg-secondary p-3">ASSET MANAGEMENT</h3>
+    <div class="container">
+      <div class="row">
+        <div
+          class="col md-3 bg-secondary rounded-4"
+          style="height: 400px; margin-top: 50px"
+        >
+          <nav class="navbar">
+            <ul class="navbar-nav mt-4 ms-4">
+              <h5 class="mt-4">Employees</h5>
+              <li class="nav-item mt-1">
+                <a class="nav-link" href="employees.html">Employees</a>
+              </li>
+
+              <h5 class="mt-4">Assets</h5>
+              <li class="nav-item">
+                <a class="nav-link" href="assets.html">Assets</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="addasset.html">Issue Asset</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="stockview.html">Stock View</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="scrap.html">scrap Asset</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="col-md-9 ms-4 mt-5">
+          <button
+            id="btn"
+            class="btn btn-primary float-end"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal"
+          >
+            Add
+          </button>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Asset Id</th>
+                <th>Asset Type</th>
+                <th>Asset Category</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr>
+                <td colspan="5" class="text-center p-5">
+                  <h4>No Data Available</h4>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="myModal">
+      <div class="modal-xl modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Asset Details</h4>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <input id="asstid" type="hidden" name="asstid" />
+                <div class="col">
+                  <label for="assettype" class="form-label"> Type</label>
+                  <input
+                    id="type"
+                    type="text"
+                    class="form-control"
+                    placeholder="eg: laptop,driller.."
+                    name="assettype"
+                  />
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col">
+                  <label for="category" class="form-label">Category</label>
+                  <select id="category" class="form-control" name="category">
+                    <option value="computer">Computer</option>
+                    <option value="electrical">Electrical</option>
+                  </select>
+                </div>
+              </div>
+              <br />
+              <button type="button" class="btn btn-primary" id="add_row">
+                Add row+
+              </button>
+              <br />
+              <br />
+              <div class="row assetrow">
+                <div class="col">
+                  <label for="assetbrand" class="form-label">Brand</label>
+                  <input
+                    id="brand1"
+                    type="text"
+                    class="form-control"
+                    placeholder="eg: lenovo,hp,Asus.."
+                    name="assetbrand"
+                  />
+                </div>
+                <div class="col">
+                  <label for="assetmodel" class="form-label">Serial No</label>
+                  <input
+                    id="model1"
+                    type="text"
+                    class="form-control"
+                    placeholder="eg: lenlap001,hpmse001.."
+                    name="assetmodel"
+                  />
+                </div>
+                <div class="col">
+                  <label for="assettype" class="form-label">Status</label>
+                  <select id="status1" class="form-control" name="status1">
+                    <option value="0">Not Assigned</option>
+                    <option value="1">Assigned</option>
+                    <option value="2">Pending</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <button
+                    type="button"
+                    value="remove"
+                    class="rmv btn btn-danger"
+                    disabled
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+              id="close"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              id="submit"
+              onclick="addasstdata()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const assturl = "http://localhost:3000/assetmaster";
+
+      $(document).ready(function () {
+        getdata();
+        $("#add_row").click(function () {
+          var rowlen = $(".assetrow").length + 1;
+          console.log(rowlen);
+          var row = `
+            <br>
+            <div class="row assetrow">
+
+              <div class="col">
+                <label for="assetbrand" class="form-label">Brand</label>
+                <input
+                id="brand${rowlen}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg: lenovo,hp,Asus.."
+                  name="assetbrand"
+                />
+              </div>
+              <div class="col">
+                <label for="assetmodel" class="form-label">Model</label>
+                <input
+                id="model${rowlen}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg: laptop,driller.."
+                  name="assetmodel"
+                />
+              </div>
+              <div class="col">
+                <label for="assettype" class="form-label">Status</label>
+                <select id="status${rowlen}" class="form-control" name="status1">
+                    <option value="0">Not Assigned</option>
+                    <option value="1">Assigned</option>
+                    <option value="2">Pending</option>
+                  </select>
+              </div>
+              <div class="col">
+                <button type="button" value="remove" class="rmv btn btn-danger">Remove</button>
+              </div>
+            </div>`;
+          $(".modal-body").append(row);
+        });
+      });
+      $("body").on("click", ".rmv", function () {
+        $(this).closest(".row").remove();
+      });
+
+      async function getdata() {
+        const method = {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        };
+        const getmaster = await fetch(assturl, method);
+        const getedmaster = await getmaster.json();
+        var output = "";
+        getedmaster.forEach((element) => {
+          const editbtn =
+            '<button class="btn btn-warning" onclick="getSingledata(' +
+            element.asset_id +
+            ')" >Edit</button>';
+          output +=
+            "<tr><td>" +
+            element.asset_id +
+            "</td><td>" +
+            element.asset_type +
+            "</td><td>" +
+            element.category +
+            "</td><td>" +
+            element.count +
+            "</td><td>" +
+            editbtn +
+            "</td></tr>";
+        });
+        $("#tbody").html(output);
+      }
+
+      async function addasstdata() {
+        const assettype = $("#type").val();
+        const category = $("#category").val();
+        const count = $(".assetrow").length;
+        const asstid = $("#asstid").val();
+
+        const assetDetails = [];
+        for (i = 1; i <= count; i++) {
+          const brand = $("#brand" + i).val();
+          const model = $("#model" + i).val();
+          const status = $("#status" + i).val();
+          const id = $("#id" + i).val();
+          const obj = {
+            asset_brand: brand,
+            asset_model_no: model,
+            asset_status: status,
+            id: id,
+          };
+          assetDetails.push(obj);
+        }
+        var method = {};
+        if (asstid) {
+          method = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: assettype,
+              category: category,
+              count: count,
+              asstid: asstid,
+
+              asset_details: assetDetails,
+            }),
+          };
+        } else {
+          method = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: assettype,
+              category: category,
+              count: count,
+              asset_details: assetDetails,
+            }),
+          };
+        }
+        const adddata = await fetch(assturl, method);
+        const addeddata = await adddata.json();
+        getdata();
+      }
+
+      async function getSingledata(id) {
+        //editcall
+        const method = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: id }),
+        };
+        const getsingledata = await fetch(assturl + "/getById", method);
+        const getteddata = await getsingledata.json();
+        const assetid = getteddata[0].asset_id;
+        const assttype = getteddata[0].asset_type;
+        const asscategory = getteddata[0].category;
+        const asstcount = getteddata[0].count;
+        const asstdetails = getteddata[0].asset_details;
+        console.log(asstdetails);
+
+        $(".assetrow").remove();
+        asstdetails.forEach((element, i) => {
+          var row = `
+           
+           <div class="row assetrow">
+             <input
+               id="id${i}"
+                 type="hidden"
+                 class="form-control"
+               
+                 value=${element.id}
+               />
+             <div class="col">
+               <label for="assetbrand" class="form-label">Brand</label>
+               <input
+               id="brand${i}"
+                 type="text"
+                 class="form-control"
+                 placeholder="eg: lenovo,hp,Asus.."
+                 name="assetbrand"
+                 value=${element.asset_brand}
+               />
+             </div>
+             <div class="col">
+               <label for="assetmodel" class="form-label">Model</label>
+               <input
+               id="model${i}"
+                 type="text"
+                 class="form-control"
+                 placeholder="eg: laptop,driller.."
+                 name="assetmodel"
+                  value=${element.asset_model_no}
+               />
+             </div>
+             <div class="col">
+               <label for="assettype" class="form-label">Status</label>
+               <select id="status${i}" class="form-control" name="status1" >
+                   <option value="0" ${
+                     element.asset_status == 0 ? "selected" : ""
+                   }>Not Assigned</option>
+                   <option value="1" ${
+                     element.asset_status == 1 ? "selected" : ""
+                   }>Assigned</option>
+                   <option value="2" ${
+                     element.asset_status == 2 ? "selected" : ""
+                   }>Pending</option>
+                 </select>
+             </div>
+             <div class="col">
+               <button type="button" value="remove" class="rmv btn btn-danger">Remove</button>
+             </div>
+           </div>`;
+          $(".modal-body").append(row);
+        });
+
+        $("#asstid").val(assetid);
+        $("#type").val(assttype);
+        $("#category").val(asscategory);
+        $("#myModal").modal("show");
+      }
+    </script>
+  </body>
+</html>

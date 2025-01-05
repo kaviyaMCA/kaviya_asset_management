@@ -1,0 +1,50 @@
+GET http://localhost:3000/assetmaster HTTP/1.1
+content-type: application/json
+####
+POST http://localhost:3000/assetmaster
+content-type: application/json
+
+{
+  "type":"laptopp",
+  "category":"computer",
+  "count":"2",
+  "asset_details":[
+    {
+     "asset_brand":"lenovo",
+     "asset_model_no":"len001",
+     "asset_status":1
+    },{
+        "asset_brand":"hp",
+     "asset_model_no":"hp001",
+     "asset_status":1
+    }]
+    
+}
+####
+PUT http://localhost:3000/assetmaster
+content-type: application/json
+
+{
+  "type":"laptopp",
+  "category":"computer",
+  "count":"2",
+  "asset_details":[
+    {
+     "asset_brand":"lenovo",
+     "asset_model_no":"len001",
+     "asset_status":1
+    },{
+        "asset_brand":"hp",
+     "asset_model_no":"hp001",
+     "asset_status":1
+    }]
+    
+}
+####
+
+DELETE http://localhost:3000/assetmaster
+content-type: application/json
+
+{
+  "id":16
+}

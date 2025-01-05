@@ -1,0 +1,40 @@
+GET http://localhost:3000/employees HTTP/1.1
+content-type: application/json
+####
+POST http://localhost:3000/employees
+content-type: application/json
+
+{
+
+  "name":"anuuu",
+  "dept":"BSC.socialogy",
+  "email":"anu@gmail.com",
+  "status":1
+}
+####
+POST http://localhost:3000/employees/getById
+content-type: application/json
+
+{
+   "id":7
+
+}
+####
+PUT http://localhost:3000/employees
+content-type: application/json
+
+{
+  "id":15,
+  "name":"paythiyam",
+  "dept":"BSC.socialogy",
+  "email":"anu@gmail.com",
+  "status":1
+}
+####
+
+DELETE http://localhost:3000/employees
+content-type: application/json
+
+{
+  "id":16
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th>Employee_id</th>
+          <th>Name</th>
+          <th>department</th>
+          <th>Email</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" name="id" /></td>
+          <td><input type="text" name="uname" /></td>
+          <td><input type="text" name="dept" /></td>
+          <td><input type="email" name="email" /></td>
+          <td><input type="button" value="remove" class="rmv" /></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">
+            <input type="button" value="+Add Row" id="add_row" />
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <script>
+      $(document).ready(function () {
+        $("#add_row").click(function () {
+          var row = `<td> <input type='text' name='id'/></td><td><input type='text' name='uname' /></td><td><input type='text' name='dept' /></td>
+      <td><input type='email' name='email'/></td><td><input type='button' value='remove' class='rmv' /></td>`;
+          $("#tbl tbody").append(row);
+        });
+      });
+      $("body").on("click", ".rmv", function () {
+        $(this).closest("tr").remove();
+      });
+    </script>
+  </body>
+</html>

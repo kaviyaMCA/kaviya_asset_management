@@ -240,8 +240,9 @@
         };
         const getmaster = await fetch(assturl, method);
         const getedmaster = await getmaster.json();
+        const data = getedmaster.data;
         var output = "";
-        getedmaster.forEach((element) => {
+        data.forEach((element) => {
           const editbtn =
             '<button class="btn btn-warning" onclick="getSingledata(' +
             element.asset_id +
@@ -314,6 +315,7 @@
       }
 
       async function getSingledata(id) {
+        // console.log(id);
         //editcall
         const method = {
           method: "POST",

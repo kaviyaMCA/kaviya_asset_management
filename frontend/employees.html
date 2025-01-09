@@ -243,10 +243,11 @@
         const getsingledata = await fetch(empapi + "/getById", method);
         const getteddata = await getsingledata.json();
 
-        const emp_id = getteddata[0].emp_id;
-        const emp_name = getteddata[0].emp_name;
-        const emp_dept = getteddata[0].emp_dept;
-        const emp_email = getteddata[0].emp_email;
+        const data = getteddata.data;
+        const emp_id = data.emp_id;
+        const emp_name = data.emp_name;
+        const emp_dept = data.emp_dept;
+        const emp_email = data.emp_email;
         $("#empid").val(emp_id);
         $("#emp_name").val(emp_name);
         $("#emp_dept").val(emp_dept);
@@ -261,8 +262,8 @@
           body: JSON.stringify({ id: id }),
         };
         const deldata = await fetch(empapi, method);
-        const deltddata = await deleteedata.json();
-        if (deleteedata.code == 200) {
+        const deltddata = await deldata.json();
+        if (deltddata.code == 200) {
           getdata();
         }
       }

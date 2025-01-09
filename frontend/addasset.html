@@ -130,8 +130,8 @@
           headers: { "Content-Type": "application/json" },
         };
         const response = await fetch(asstmasterapi, method);
-        const data = await response.json();
-
+        const datas = await response.json();
+        const data = datas.data;
         data.forEach((el) => {
           var newOption = $("<option>", {
             value: el.asset_id,
@@ -169,7 +169,8 @@
           body: JSON.stringify({ asset_ref_id: type }),
         };
         const getmodelnoapi = await fetch(asstsingledata, method);
-        const data = await getmodelnoapi.json();
+        const datas = await getmodelnoapi.json();
+        const data = datas.data;
         //console.log(data);
         data.forEach((el) => {
           var newOption = $("<option>", {

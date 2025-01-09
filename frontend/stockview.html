@@ -87,7 +87,8 @@
           "http://localhost:3000/assetdetails/getByStatus",
           method
         );
-        const datas = await data.json();
+        const datasVal = await data.json();
+        const datas = datasVal.data;
         var output = "";
         if (datas.length > 0) {
           datas.forEach((element) => {

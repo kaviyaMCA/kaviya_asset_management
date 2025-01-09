@@ -35,6 +35,8 @@ const getalldata = async (req, res) => {
 
 const getsingledata = async (req, res) => {
   const id = req.body.id;
+  const apiResponse = {};
+
   try {
     const result = await Employee.findByPk(id);
     apiResponse["status"] = "success";
@@ -165,7 +167,7 @@ const updateemployee = async (req, res) => {
 };
 
 const deleteemployee = async (req, res) => {
-  const id = req.body.emp_id;
+  const id = req.body.id;
   const apiResponse = {};
   try {
     const result = await Employee.destroy({

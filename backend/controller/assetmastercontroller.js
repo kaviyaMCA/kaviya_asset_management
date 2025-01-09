@@ -1,5 +1,5 @@
 const db = require("../config/dbconfig");
-
+const AssetMaster = require("../models/AssetMaster");
 const getmaster = (req, res) => {
   const sql = "SELECT * FROM  asset_master";
   db.query(sql, (err, result) => {
@@ -9,17 +9,21 @@ const getmaster = (req, res) => {
 
 const getSingledata = async (req, res) => {
   const { id } = req.body;
-  console.log(id);
+  try {
+    const result = await AssetMaster.findByPk(id);
+    console.log(result);
+  } catch (err) {}
+  // console.log(id);
 
-  const sql = "SELECT * FROM  asset_master WHERE asset_id=?";
-  const asset = await dbQuery(sql, [id]);
-  const result = asset[0];
-  const asset_id = asset[0].asset_id;
-  const sql1 = "SELECT * FROM asset_details WHERE asset_ref_id=?";
-  const asset1 = await dbQuery(sql1, [asset_id]);
-  result.asset_details = asset1;
-  console.log(asset);
-  res.json(asset);
+  // const sql = "SELECT * FROM  asset_master WHERE asset_id=?";
+  // const asset = await dbQuery(sql, [id]);
+  // const result = asset[0];
+  // const asset_id = asset[0].asset_id;
+  // const sql1 = "SELECT * FROM asset_details WHERE asset_ref_id=?";
+  // const asset1 = await dbQuery(sql1, [asset_id]);
+  // result.asset_details = asset1;
+  // console.log(asset);
+  // res.json(asset);
 };
 
 const addmaster = (req, res) => {

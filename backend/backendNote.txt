@@ -1,0 +1,7 @@
+npm install sequelize sequelize-cli
+npx sequelize-cli init  (Create folder strucher)
+npm install sequelize-auto (If we have already table will intergare it)
+
+
+
+s1 : npm install sequelize sequelize-cli mysql2

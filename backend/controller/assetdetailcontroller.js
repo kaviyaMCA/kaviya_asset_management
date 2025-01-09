@@ -1,18 +1,41 @@
 const db = require("../config/dbconfig");
+const AssetDetails = require("../models/Assetdetails");
 
-const getdetails = (req, res) => {
-  const sql = "SELECT * FROM  asset_details";
-  db.query(sql, (err, result) => {
-    res.json(result);
-  });
+const getdetails = async (req, res) => {
+  const apiResponse = {};
+  try {
+    const data = await AssetDetails.findAll();
+    apiResponse.status = "Success";
+    apiResponse["code"] = 200;
+    apiResponse["data"] = data;
+  } catch (err) {
+    apiResponse["status"] = "error";
+    apiResponse["code"] = 400;
+    apiResponse["data"] = [];
+    apiResponse["error"] = err;
+  }
+  res.json(apiResponse);
 };
 
 const get_by_status = async (req, res) => {
   const asset_status = req.body.asset_status;
-
-  const sql = "SELECT * FROM  asset_details WHERE asset_status = ?";
-  const result = await dbQuery(sql, [asset_status]);
-  res.json(result);
+  const apiResponse = {};
+  try {
+    const data = await AssetDetails.findAll({
+      where: {
+        asset_status, // Equivalent to "asset_status = ?" in raw SQL
+      },
+    });
+    apiResponse.status = "Success";
+    apiResponse["code"] = 200;
+    apiResponse["data"] = data;
+  } catch (err) {
+    apiResponse["status"] = "error";
+    apiResponse["code"] = 400;
+    apiResponse["data"] = [];
+    apiResponse["error"] = err;
+  }
+  res.json(apiResponse);
 };
 const getbyrefid = (req, res) => {
   const refid = req.body.asset_ref_id;
@@ -22,13 +45,27 @@ const getbyrefid = (req, res) => {
   });
 };
 
-const assigntoemp = (req, res) => {
+const assigntoemp = async (req, res) => {
   const { emp_id, id } = req.body;
-  console.log(id, emp_id);
-  const sql = "UPDATE asset_details SET emp_id=?,asset_status=2 WHERE id=?";
-  db.query(sql, [emp_id, id], (err, result) => {
-    res.json(result);
-  });
+  const apiResponse = {};
+  try {
+    const result = await AssetDetails.update(
+      { emp_id, asset_status: 2 }, // Update these columns
+      { where: { id } } // Apply this condition
+    );
+    apiResponse["status"] = "success";
+    apiResponse["code"] = 200;
+    apiResponse["data"] = result;
+    apiResponse["message"] = "Data updated suceesfully";
+  } catch (err) {
+    apiResponse["status"] = "error";
+    apiResponse["code"] = 400;
+    apiResponse["message"] = "something went wrong";
+    apiResponse["data"] = [];
+    apiResponse["error"] = err;
+  }
+  // res.json(apiResponse);
+  console.log(asset_status);
 };
 
 const getEmpAsset = (req, res) => {
